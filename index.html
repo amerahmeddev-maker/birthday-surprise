@@ -2,46 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#09070b" />
-
-<title>For My Love ❤️</title>
+<title>For My Soulmate Neeho ❤️</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#08070a;
+  --bg:#09070b;
   --text:#fff9fb;
-  --muted:#bbaeb6;
+  --muted:#c9bcc4;
   --pink:#ff4d7d;
-  --pink2:#ff86a7;
-  --purple:#9d7bff;
-  --gold:#ffd38c;
+  --pink2:#ff8ca9;
+  --purple:#9b7cff;
+  --gold:#ffd9a2;
+  --panel:rgba(255,255,255,.08);
+  --panel2:rgba(255,255,255,.12);
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#09070b}
 body{
-  background:var(--bg);
   color:var(--text);
   font-family:"DM Sans",sans-serif;
   overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
 }
-
-button{
-  font:inherit;
-}
+button,input{font:inherit}
 
 #app{
   position:relative;
@@ -49,952 +39,867 @@ button{
   min-height:100vh;
   overflow:hidden;
   background:
-    radial-gradient(circle at 20% 20%,rgba(255,77,125,.10),transparent 30%),
-    radial-gradient(circle at 80% 70%,rgba(157,123,255,.10),transparent 32%),
-    #08070a;
+    radial-gradient(circle at 15% 10%,rgba(255,77,125,.16),transparent 31%),
+    radial-gradient(circle at 85% 90%,rgba(155,124,255,.16),transparent 34%),
+    linear-gradient(180deg,#120b11 0%,#09070b 55%,#0d0911 100%);
 }
 
-/* AMBIENT GLOW */
-.glow{
+.aurora{
   position:absolute;
   border-radius:50%;
   filter:blur(90px);
+  opacity:.28;
   pointer-events:none;
-  opacity:.35;
-  animation:floatGlow 10s ease-in-out infinite alternate;
+  mix-blend-mode:screen;
+}
+.a1{width:380px;height:380px;background:#ff3d78;left:-130px;top:-120px;animation:aurora1 11s ease-in-out infinite alternate}
+.a2{width:420px;height:420px;background:#734dff;right:-160px;bottom:-160px;animation:aurora2 13s ease-in-out infinite alternate}
+.a3{width:280px;height:280px;background:#ff9bb7;left:42%;top:35%;opacity:.10;animation:aurora3 9s ease-in-out infinite alternate}
+@keyframes aurora1{to{transform:translate(80px,70px) scale(1.16)}}
+@keyframes aurora2{to{transform:translate(-70px,-55px) scale(1.18)}}
+@keyframes aurora3{to{transform:translate(40px,-35px) scale(1.25)}}
+
+#fxLayer,#touchLayer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:80;
 }
 
-.glow.one{
-  width:350px;
-  height:350px;
-  background:#ff467c;
-  left:-120px;
-  top:-120px;
+.top-controls{
+  position:absolute;
+  right:16px;
+  top:calc(16px + env(safe-area-inset-top));
+  z-index:100;
+  display:flex;
+  gap:8px;
 }
-
-.glow.two{
-  width:420px;
-  height:420px;
-  background:#7a55ff;
-  right:-150px;
-  bottom:-150px;
-  animation-delay:-4s;
+.icon-btn{
+  width:46px;height:46px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(10,7,11,.45);
+  color:white;
+  backdrop-filter:blur(16px);
+  cursor:pointer;
+  display:grid;place-items:center;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+  transition:transform .2s ease,background .2s ease;
 }
+.icon-btn:active{transform:scale(.9);background:rgba(255,255,255,.14)}
 
-@keyframes floatGlow{
-  to{
-    transform:translate(60px,50px) scale(1.15);
-  }
-}
-
-/* SCREEN */
 .scene{
   position:absolute;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:28px;
+  padding:clamp(22px,4vw,42px);
   opacity:0;
+  visibility:hidden;
   pointer-events:none;
-  transform:scale(1.04);
-  transition:
-    opacity .9s cubic-bezier(.2,.8,.2,1),
-    transform 1.2s cubic-bezier(.2,.8,.2,1);
+  transform:scale(1.035);
 }
-
 .scene.active{
-  opacity:1;
+  visibility:visible;
   pointer-events:auto;
-  transform:scale(1);
+  animation:sceneIn .9s cubic-bezier(.2,.85,.2,1) forwards;
 }
-
-.scene.exit{
-  opacity:0;
-  transform:scale(.96);
+.scene.leaving{
+  visibility:visible;
+  pointer-events:none;
+  animation:sceneOut .62s cubic-bezier(.4,0,.3,1) forwards;
+}
+@keyframes sceneIn{
+  from{opacity:0;transform:scale(1.055) translateY(12px);filter:blur(8px)}
+  to{opacity:1;transform:scale(1) translateY(0);filter:blur(0)}
+}
+@keyframes sceneOut{
+  from{opacity:1;transform:scale(1);filter:blur(0)}
+  to{opacity:0;transform:scale(.95);filter:blur(7px)}
 }
 
 .inner{
   width:min(100%,1100px);
-  text-align:center;
   position:relative;
+  text-align:center;
   z-index:3;
 }
 
-/* TYPOGRAPHY */
 .small-label{
-  font-size:12px;
+  font-size:11px;
+  font-weight:800;
   letter-spacing:.22em;
   text-transform:uppercase;
-  color:var(--muted);
+  color:rgba(255,255,255,.55);
   margin-bottom:18px;
-  font-weight:700;
 }
-
 .hero{
-  font-size:clamp(48px,9vw,112px);
-  line-height:.88;
-  letter-spacing:-.065em;
-  font-weight:700;
+  font-size:clamp(48px,9vw,110px);
+  line-height:.9;
+  letter-spacing:-.06em;
+  font-weight:800;
 }
-
-.hero em{
+.hero em,.final-title em{
   font-family:"Playfair Display",serif;
-  color:var(--pink2);
   font-weight:600;
+  color:var(--pink2);
 }
-
 .subtitle{
-  max-width:680px;
+  width:min(680px,92%);
   margin:22px auto 0;
-  font-size:clamp(16px,2vw,23px);
-  line-height:1.6;
-  color:#d9ced5;
+  color:#ddd0d8;
+  font-size:clamp(16px,2vw,22px);
+  line-height:1.62;
 }
-
-/* BUTTONS */
+.actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
 .btn{
   border:none;
   border-radius:999px;
-  padding:15px 24px;
-  cursor:pointer;
-  transition:.25s ease;
-  font-weight:700;
-}
-
-.btn-primary{
+  min-height:50px;
+  padding:14px 24px;
   color:white;
-  background:linear-gradient(135deg,var(--pink),#ff7c9f);
-  box-shadow:0 14px 50px rgba(255,77,125,.28);
-}
-
-.btn-primary:hover{
-  transform:translateY(-3px) scale(1.02);
-}
-
-.btn-ghost{
-  color:white;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(10px);
-}
-
-.actions{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:30px;
-  flex-wrap:wrap;
-}
-
-/* LOADING / INTRO */
-.loading-text{
-  font-size:clamp(22px,4vw,42px);
-  font-weight:600;
-}
-
-.loading-bar{
-  width:min(420px,80vw);
-  height:5px;
-  margin:28px auto 0;
-  background:rgba(255,255,255,.1);
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.loading-fill{
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,var(--pink),var(--purple));
-  animation:load 2.3s ease forwards;
-}
-
-@keyframes load{
-  to{width:100%}
-}
-
-/* LATE ALERT */
-.alert-box{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 16px;
-  border-radius:100px;
-  background:rgba(255,70,100,.12);
-  border:1px solid rgba(255,90,120,.22);
-  color:#ff9eb7;
-  font-size:14px;
-  margin-bottom:30px;
-}
-
-.shake{
-  animation:shake .45s ease;
-}
-
-@keyframes shake{
-  20%{transform:translateX(-8px)}
-  40%{transform:translateX(8px)}
-  60%{transform:translateX(-5px)}
-  80%{transform:translateX(5px)}
-}
-
-/* MEMORY CARDS */
-.memory-stage{
-  width:min(900px,100%);
-  height:min(65vh,600px);
-  margin:0 auto;
-  position:relative;
-}
-
-.memory-card{
-  position:absolute;
-  width:clamp(150px,24vw,250px);
-  aspect-ratio:4/5;
-  border-radius:24px;
-  overflow:hidden;
-  background:#1d171d;
-  box-shadow:
-    0 25px 70px rgba(0,0,0,.42),
-    inset 0 0 0 1px rgba(255,255,255,.08);
-  transition:.45s ease;
-}
-
-.memory-card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.memory-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.52),transparent 45%);
-}
-
-.memory-card span{
-  position:absolute;
-  z-index:2;
-  left:15px;
-  right:15px;
-  bottom:14px;
-  font-weight:700;
-  font-size:14px;
-  text-align:left;
-}
-
-.card1{
-  left:5%;
-  top:16%;
-  transform:rotate(-11deg);
-  animation:cardFloat 5s ease-in-out infinite;
-}
-
-.card2{
-  left:35%;
-  top:2%;
-  transform:rotate(4deg);
-  animation:cardFloat 5.8s ease-in-out infinite reverse;
-}
-
-.card3{
-  right:4%;
-  top:20%;
-  transform:rotate(11deg);
-  animation:cardFloat 5.3s ease-in-out infinite;
-}
-
-@keyframes cardFloat{
-  50%{
-    margin-top:-16px;
-  }
-}
-
-/* RANDOM LABELS */
-.sticker{
-  position:absolute;
-  z-index:6;
-  padding:10px 14px;
-  border-radius:14px;
-  font-size:13px;
   font-weight:800;
-  background:white;
-  color:#191015;
-  box-shadow:0 12px 30px rgba(0,0,0,.25);
+  cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.btn:active{transform:scale(.94)}
+.btn-primary{
+  background:linear-gradient(135deg,#ff4d7d,#ff789b);
+  box-shadow:0 16px 44px rgba(255,77,125,.27);
+}
+.btn-soft{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);
 }
 
-.sticker.one{
-  top:6%;
-  left:2%;
-  transform:rotate(-8deg);
-}
-
-.sticker.two{
-  right:1%;
-  bottom:10%;
-  transform:rotate(8deg);
-}
-
-/* FULLSCREEN PHOTO */
-.full-photo{
-  width:min(500px,80vw);
-  aspect-ratio:4/5;
-  margin:auto;
-  border-radius:32px;
-  overflow:hidden;
-  box-shadow:0 30px 100px rgba(0,0,0,.5);
-  position:relative;
-}
-
-.full-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.full-photo::after{
-  content:"";
+.progress-wrap{
   position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(8,5,9,.7),transparent 50%);
+  z-index:90;
+  left:50%;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:min(440px,68vw);
+  height:3px;
+  border-radius:99px;
+  overflow:hidden;
+  background:rgba(255,255,255,.09);
+}
+.progress{
+  width:0;height:100%;
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  transition:width .7s cubic-bezier(.2,.8,.2,1);
 }
 
-/* HEART */
-.big-heart{
-  font-size:clamp(100px,20vw,210px);
-  animation:heartbeat 1.2s ease-in-out infinite;
-  filter:drop-shadow(0 15px 40px rgba(255,50,100,.4));
+/* Scene 1 */
+.heart-orbit{
+  width:120px;height:120px;margin:0 auto 24px;
+  position:relative;display:grid;place-items:center;
 }
-
+.heart-core{
+  font-size:56px;
+  animation:heartbeat 1.15s ease-in-out infinite;
+  filter:drop-shadow(0 12px 30px rgba(255,55,110,.42));
+}
+.orbit{
+  position:absolute;inset:8px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);
+  animation:spin 7s linear infinite;
+}
+.orbit::after{
+  content:"✦";position:absolute;top:-8px;left:50%;
+  color:#ffd7e2;font-size:16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes heartbeat{
   0%,100%{transform:scale(1)}
-  20%{transform:scale(1.1)}
-  40%{transform:scale(.96)}
-  60%{transform:scale(1.07)}
+  18%{transform:scale(1.12)}
+  35%{transform:scale(.98)}
+  54%{transform:scale(1.08)}
 }
+.loading-line{
+  width:min(380px,74vw);height:5px;margin:24px auto 0;
+  border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;
+}
+.loading-line span{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  animation:loading 2.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes loading{to{width:100%}}
 
-/* FINAL */
+/* Scene 2 */
+.alert-pill{
+  display:inline-flex;
+  padding:10px 15px;
+  border-radius:999px;
+  background:rgba(255,80,118,.11);
+  border:1px solid rgba(255,120,150,.22);
+  color:#ffadc1;
+  font-size:13px;font-weight:800;
+  margin-bottom:24px;
+  animation:alertPulse 1.7s ease-in-out infinite;
+}
+@keyframes alertPulse{50%{box-shadow:0 0 0 9px rgba(255,77,125,0)}0%,100%{box-shadow:0 0 0 0 rgba(255,77,125,.18)}}
+
+/* Scene 3 */
+.memory-stage{
+  width:min(900px,100%);
+  height:min(62vh,590px);
+  margin:0 auto;
+  position:relative;
+  perspective:1100px;
+}
+.memory-card{
+  position:absolute;
+  width:clamp(150px,23vw,245px);
+  aspect-ratio:4/5;
+  border-radius:25px;
+  overflow:hidden;
+  background:#1b151b;
+  box-shadow:0 28px 75px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08);
+  transform-style:preserve-3d;
+}
+.memory-card img{width:100%;height:100%;object-fit:cover;display:block}
+.memory-card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.72),transparent 52%);
+}
+.memory-card span{
+  position:absolute;z-index:3;left:15px;right:15px;bottom:14px;
+  color:white;text-align:left;font-size:14px;font-weight:800;line-height:1.3;
+}
+.mc1{left:5%;top:17%;transform:rotate(-12deg);animation:fly1 .9s .05s both cubic-bezier(.2,.8,.2,1),floatA 5.6s 1.1s ease-in-out infinite}
+.mc2{left:36%;top:2%;transform:rotate(4deg);animation:fly2 .95s .13s both cubic-bezier(.2,.8,.2,1),floatB 6.1s 1.2s ease-in-out infinite}
+.mc3{right:4%;top:20%;transform:rotate(11deg);animation:fly3 1s .2s both cubic-bezier(.2,.8,.2,1),floatA 5.9s 1.25s ease-in-out infinite reverse}
+@keyframes fly1{from{opacity:0;transform:translate(-160px,120px) rotate(-30deg) scale(.55)}}
+@keyframes fly2{from{opacity:0;transform:translateY(-160px) rotate(14deg) scale(.55)}}
+@keyframes fly3{from{opacity:0;transform:translate(170px,100px) rotate(28deg) scale(.55)}}
+@keyframes floatA{50%{margin-top:-14px}}
+@keyframes floatB{50%{margin-top:12px}}
+.sticker{
+  position:absolute;z-index:7;padding:10px 14px;border-radius:14px;
+  background:white;color:#171017;font-weight:900;font-size:12px;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.s1{left:1%;top:5%;transform:rotate(-8deg)}
+.s2{right:1%;bottom:8%;transform:rotate(7deg)}
+
+/* Scene 4 slider */
+.mood-card{
+  width:min(680px,94%);
+  margin:0 auto;
+  padding:28px;
+  border-radius:30px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.11);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 80px rgba(0,0,0,.22);
+}
+.mood-face{font-size:clamp(72px,15vw,118px);margin-bottom:10px;transition:transform .25s ease}
+.range-wrap{margin:28px auto 0;width:min(520px,100%)}
+#moodRange{width:100%;accent-color:#ff5b86}
+.range-labels{display:flex;justify-content:space-between;margin-top:10px;color:rgba(255,255,255,.55);font-size:12px}
+#moodResponse{margin-top:20px;font-size:18px;font-weight:800;color:#ffd9e4;min-height:28px}
+
+/* Scene 5 single cinematic */
+.cinema-photo{
+  width:min(520px,80vw);
+  aspect-ratio:4/5;
+  margin:0 auto;
+  border-radius:34px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 35px 100px rgba(0,0,0,.52);
+  animation:cinemaReveal 1.15s cubic-bezier(.2,.85,.2,1) both;
+}
+.cinema-photo img{width:100%;height:100%;object-fit:cover;animation:slowZoom 8s ease-in-out infinite alternate}
+.cinema-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,5,9,.68),transparent 50%)}
+@keyframes cinemaReveal{from{opacity:0;transform:scale(.55) rotate(-7deg);filter:blur(14px)}to{opacity:1;transform:scale(1) rotate(0);filter:blur(0)}}
+@keyframes slowZoom{to{transform:scale(1.08)}}
+
+/* Scene 6 Hold to reveal */
+.reveal-shell{
+  width:min(520px,82vw);aspect-ratio:4/5;margin:0 auto;
+  position:relative;border-radius:32px;overflow:hidden;
+  box-shadow:0 30px 95px rgba(0,0,0,.5);
+  user-select:none;
+  touch-action:manipulation;
+}
+.reveal-shell img{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(22px) brightness(.72);
+  transform:scale(1.08);
+  transition:filter .15s linear,transform .15s linear;
+}
+.reveal-overlay{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:rgba(8,5,9,.20);
+}
+.hold-ring{
+  width:120px;height:120px;border-radius:50%;
+  display:grid;place-items:center;
+  background:rgba(8,5,9,.56);border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(12px);
+  position:relative;
+}
+.hold-ring::before{
+  content:"";position:absolute;inset:-5px;border-radius:50%;
+  background:conic-gradient(#ff5c86 var(--hold,0%),rgba(255,255,255,.13) 0);
+  -webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);
+  mask:radial-gradient(circle,transparent 58%,#000 60%);
+}
+.hold-ring strong{font-size:13px;line-height:1.25}
+.reveal-done .reveal-overlay{opacity:0;transition:opacity .6s ease;pointer-events:none}
+.reveal-done img{filter:none!important;transform:scale(1)!important;transition:filter .7s ease,transform 1.1s ease}
+
+/* Scene 7 filmstrip */
+.film-wrap{width:100%;overflow:hidden;padding:26px 0}
+.film-track{
+  display:flex;gap:16px;width:max-content;
+  animation:filmMove 18s linear infinite;
+}
+.film-card{
+  width:clamp(180px,28vw,300px);aspect-ratio:4/5;border-radius:24px;overflow:hidden;
+  position:relative;box-shadow:0 25px 60px rgba(0,0,0,.35);
+  transform:rotate(var(--r));
+}
+.film-card img{width:100%;height:100%;object-fit:cover}
+.film-card span{
+  position:absolute;left:14px;bottom:13px;right:14px;
+  text-align:left;font-weight:800;font-size:14px;
+  text-shadow:0 3px 16px rgba(0,0,0,.7);
+}
+.film-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 45%)}
+.film-card span{z-index:2}
+@keyframes filmMove{from{transform:translateX(0)}to{transform:translateX(-38%)}}
+
+/* Scene 8 rapid moments */
+.rapid-stage{
+  position:relative;width:min(760px,92vw);height:min(64vh,580px);margin:0 auto;
+}
+.rapid-card{
+  position:absolute;inset:0;margin:auto;
+  width:min(480px,78vw);aspect-ratio:4/5;border-radius:30px;overflow:hidden;
+  box-shadow:0 30px 90px rgba(0,0,0,.5);
+  opacity:0;transform:scale(.7) rotate(-10deg);
+}
+.rapid-card img{width:100%;height:100%;object-fit:cover}
+.rapid-card.on{animation:rapidIn 1.2s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes rapidIn{
+  0%{opacity:0;transform:scale(.58) rotate(-13deg) translateY(80px);filter:blur(14px)}
+  55%{opacity:1;transform:scale(1.05) rotate(2deg) translateY(0);filter:blur(0)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+.rapid-caption{position:absolute;z-index:5;left:50%;bottom:7%;transform:translateX(-50%);width:90%;font-size:clamp(20px,4vw,34px);font-weight:900;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+
+/* Scene 9 apology */
+.apology-heart{
+  font-size:clamp(105px,21vw,210px);
+  animation:heartbeat 1.2s ease-in-out infinite;
+  filter:drop-shadow(0 18px 50px rgba(255,55,110,.38));
+}
+.soft-lines span{display:block;opacity:0;transform:translateY(12px);animation:lineIn .8s forwards}
+.soft-lines span:nth-child(1){animation-delay:.18s}
+.soft-lines span:nth-child(2){animation-delay:.65s}
+.soft-lines span:nth-child(3){animation-delay:1.1s}
+@keyframes lineIn{to{opacity:1;transform:translateY(0)}}
+
+/* Scene 10 mosaic */
+.mosaic{
+  width:min(880px,94vw);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:0 auto 22px;
+  perspective:1000px;
+}
+.tile{
+  aspect-ratio:1/1.18;
+  overflow:hidden;
+  border-radius:16px;
+  opacity:0;
+  transform:translateY(55px) scale(.7) rotate(var(--rr));
+  animation:tileIn .8s cubic-bezier(.2,.9,.2,1) forwards;
+}
+.tile img{width:100%;height:100%;object-fit:cover}
+.tile:nth-child(1){animation-delay:.02s}.tile:nth-child(2){animation-delay:.08s}.tile:nth-child(3){animation-delay:.14s}.tile:nth-child(4){animation-delay:.20s}
+.tile:nth-child(5){animation-delay:.26s}.tile:nth-child(6){animation-delay:.32s}.tile:nth-child(7){animation-delay:.38s}.tile:nth-child(8){animation-delay:.44s}
+.tile:nth-child(9){animation-delay:.50s}.tile:nth-child(10){animation-delay:.56s}.tile:nth-child(11){animation-delay:.62s}.tile:nth-child(12){animation-delay:.68s}
+@keyframes tileIn{to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
 .final-title{
   font-family:"Playfair Display",serif;
   font-style:italic;
-  font-size:clamp(55px,11vw,125px);
+  font-size:clamp(52px,10vw,112px);
   line-height:.88;
-  letter-spacing:-.06em;
+  letter-spacing:-.055em;
 }
+.final-sub{margin-top:18px;font-size:clamp(16px,2.2vw,22px);line-height:1.55;color:#e5d9df}
+.final-sub strong{color:white}
+.signature{margin-top:25px;font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.55);font-weight:800}
 
-.final-title span{
-  color:var(--pink2);
-}
-
-.signature{
-  margin-top:35px;
-  color:var(--muted);
-  font-size:15px;
-  letter-spacing:.08em;
-}
-
-/* PARTICLES */
-.particle{
+/* Touch hearts */
+.touch-heart{
   position:absolute;
-  top:-10%;
-  z-index:20;
-  pointer-events:none;
+  font-size:22px;
+  transform:translate(-50%,-50%);
+  animation:touchFloat 1.25s ease-out forwards;
+  filter:drop-shadow(0 8px 18px rgba(255,70,120,.35));
+}
+@keyframes touchFloat{
+  0%{opacity:0;transform:translate(-50%,-20%) scale(.5) rotate(-12deg)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-130px) scale(1.3) rotate(16deg)}
+}
+.particle{
+  position:absolute;top:-10%;z-index:2;pointer-events:none;
   animation:fall linear forwards;
 }
+@keyframes fall{to{transform:translateY(120vh) rotate(520deg);opacity:0}}
 
-@keyframes fall{
-  to{
-    transform:translateY(120vh) rotate(500deg);
-    opacity:0;
-  }
-}
-
-/* PROGRESS */
-.progress-wrap{
-  position:absolute;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(450px,70vw);
-  height:3px;
-  z-index:30;
-  background:rgba(255,255,255,.1);
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progress{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg,var(--pink),var(--purple));
-  transition:.8s ease;
-}
-
-/* TOP CONTROLS */
-.top-controls{
-  position:absolute;
-  right:18px;
-  top:18px;
-  display:flex;
-  gap:8px;
-  z-index:50;
-}
-
-.icon-btn{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(15,10,14,.55);
-  color:white;
-  backdrop-filter:blur(12px);
-  cursor:pointer;
-  font-size:16px;
-}
-
-/* TAP */
-.tap-note{
-  position:absolute;
-  bottom:38px;
-  left:50%;
-  transform:translateX(-50%);
-  color:rgba(255,255,255,.45);
-  font-size:12px;
-  z-index:20;
-}
-
-/* MOBILE */
 @media(max-width:650px){
+  .scene{padding:20px}
+  .memory-stage{height:500px}
+  .memory-card{width:45vw}
+  .mc1{left:0;top:25%}
+  .mc2{left:27%;top:5%}
+  .mc3{right:-2%;top:41%}
+  .s1{top:10%}.s2{bottom:7%}
+  .mosaic{grid-template-columns:repeat(3,1fr);gap:6px}
+  .tile{border-radius:12px}
+  .film-card{width:55vw}
+  .rapid-stage{height:500px}
+}
 
-  .scene{
-    padding:22px;
-  }
-
-  .memory-stage{
-    height:500px;
-  }
-
-  .memory-card{
-    width:45vw;
-  }
-
-  .card1{
-    left:1%;
-    top:24%;
-  }
-
-  .card2{
-    left:27%;
-    top:4%;
-  }
-
-  .card3{
-    right:0;
-    top:38%;
-  }
-
-  .sticker{
-    font-size:11px;
-  }
-
-  .hero{
-    font-size:clamp(46px,15vw,80px);
-  }
-
-  .subtitle{
-    font-size:16px;
-  }
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
 
 <body>
-
 <div id="app">
-
-  <div class="glow one"></div>
-  <div class="glow two"></div>
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+  <div class="aurora a3"></div>
+  <div id="fxLayer"></div>
+  <div id="touchLayer"></div>
 
   <audio id="music" loop>
     <source src="assets/music.mp3" type="audio/mpeg">
   </audio>
 
   <div class="top-controls">
-    <button class="icon-btn" id="musicBtn">♫</button>
-    <button class="icon-btn" id="restartBtn">↻</button>
+    <button class="icon-btn" id="musicBtn" aria-label="Toggle music">♫</button>
+    <button class="icon-btn" id="restartBtn" aria-label="Restart">↻</button>
   </div>
 
-  <!-- SCENE 1 -->
+  <!-- 1 -->
   <section class="scene active">
     <div class="inner">
-
-      <div class="small-label">
-        PRIVATE MESSAGE FOR ONE VERY IMPORTANT PERSON
+      <div class="heart-orbit">
+        <div class="orbit"></div>
+        <div class="heart-core">❤️</div>
       </div>
-
-      <div class="loading-text">
-        Preparing something for you…
-      </div>
-
-      <div class="loading-bar">
-        <div class="loading-fill"></div>
-      </div>
-
-      <p class="subtitle">
-        Please keep your expectations reasonable.
-        The husband responsible for this production is already late.
-      </p>
-
-      <div class="actions">
-        <button class="btn btn-primary next">
-          Open anyway ❤️
-        </button>
-      </div>
-
+      <div class="small-label">A SMALL THING FOR MY FAVORITE PERSON</div>
+      <h1 class="hero">Made with<br><em>a lot of love.</em></h1>
+      <div class="loading-line"><span></span></div>
+      <p class="subtitle">And yes… also with slightly questionable timing. 😭</p>
+      <div class="actions"><button class="btn btn-primary next">Open it ❤️</button></div>
     </div>
   </section>
 
-  <!-- SCENE 2 -->
+  <!-- 2 -->
   <section class="scene">
     <div class="inner">
-
-      <div class="alert-box">
-        ⚠️ Birthday Wish Delivery Status: DELAYED
-      </div>
-
-      <h1 class="hero">
-        Okay.<br>
-        <em>I know.</em>
-      </h1>
-
-      <p class="subtitle">
-        This birthday wish is late. 😭
-        <br><br>
-        And yes… before you say anything,
-        I already know I deserve the look you're giving me right now.
-      </p>
-
-      <div class="actions">
-        <button class="btn btn-primary next">
-          Let me explain 😂
-        </button>
-      </div>
-
+      <div class="alert-pill">⚠️ Birthday wish delivery status: DELAYED</div>
+      <h1 class="hero">Okay.<br><em>I know.</em></h1>
+      <p class="subtitle">This birthday wish is late. 😭<br><br>And yes… before you say anything, I already know I deserve the look you're giving me right now.</p>
+      <div class="actions"><button class="btn btn-primary next">Let me explain 😂</button></div>
     </div>
   </section>
 
-  <!-- SCENE 3 -->
+  <!-- 3 -->
   <section class="scene">
     <div class="inner">
-
       <div class="memory-stage">
-
-        <div class="memory-card card1">
-          <img src="assets/photo1.jpg" alt="">
-          <span>Proof that I married the cutest troublemaker 😂</span>
-        </div>
-
-        <div class="memory-card card2">
-          <img src="assets/photo2.jpg" alt="">
-          <span>My favorite human ❤️</span>
-        </div>
-
-        <div class="memory-card card3">
-          <img src="assets/photo3.jpg" alt="">
-          <span>Still don't know how I got this lucky 😭</span>
-        </div>
-
-        <div class="sticker one">
-          husband.exe is trying
-        </div>
-
-        <div class="sticker two">
-          100% worth the delay ❤️
-        </div>
-
+        <div class="memory-card mc1"><img src="assets/photo1.jpg" alt=""><span>Proof that I married the cutest troublemaker 😂</span></div>
+        <div class="memory-card mc2"><img src="assets/photo2.jpg" alt=""><span>My favorite human ❤️</span></div>
+        <div class="memory-card mc3"><img src="assets/photo3.jpg" alt=""><span>Still don't know how I got this lucky 😭</span></div>
+        <div class="sticker s1">husband is trying 😭</div>
+        <div class="sticker s2">100% worth the delay ❤️</div>
       </div>
-
-      <button class="btn btn-primary next">
-        Continue →
-      </button>
-
+      <button class="btn btn-primary next">Continue →</button>
     </div>
   </section>
 
-  <!-- SCENE 4 -->
+  <!-- 4 -->
   <section class="scene">
     <div class="inner">
-
-      <div class="small-label">
-        SERIOUS MODE ACTIVATED
+      <div class="mood-card">
+        <div class="small-label">ONE IMPORTANT QUESTION</div>
+        <div class="mood-face" id="moodFace">🥺</div>
+        <h2 style="font-size:clamp(30px,6vw,58px);letter-spacing:-.04em">How angry are you that I'm late? 😭</h2>
+        <div class="range-wrap">
+          <input id="moodRange" type="range" min="0" max="100" value="45" aria-label="How angry are you">
+          <div class="range-labels"><span>Not angry ❤️</span><span>Very angry 😭</span></div>
+        </div>
+        <div id="moodResponse">Okay… I can still survive this. 😂❤️</div>
+        <div class="actions"><button class="btn btn-primary next">I accept my fate 😭</button></div>
       </div>
+    </div>
+  </section>
 
-      <h1 class="hero">
-        But here's the<br>
-        <em>real truth.</em>
-      </h1>
+  <!-- 5 -->
+  <section class="scene">
+    <div class="inner">
+      <div class="small-label">SERIOUS MODE ACTIVATED</div>
+      <div class="cinema-photo"><img src="assets/photo4.jpg" alt=""></div>
+      <p class="subtitle">You're my favorite smile, my favorite notification, my favorite person to annoy… and somehow still the person I want beside me through everything.</p>
+      <div class="actions"><button class="btn btn-primary next">One more thing… ❤️</button></div>
+    </div>
+  </section>
 
-      <p class="subtitle">
-        Missing the exact date could never mean
-        forgetting how important you are to me.
+  <!-- 6 -->
+  <section class="scene" id="holdScene">
+    <div class="inner">
+      <div class="small-label">ONE OF MY FAVORITE MEMORIES</div>
+      <div class="reveal-shell" id="revealShell">
+        <img src="assets/photo5.jpg" alt="">
+        <div class="reveal-overlay">
+          <div class="hold-ring" id="holdRing" style="--hold:0%">
+            <strong id="holdText">Hold<br>to reveal ❤️</strong>
+          </div>
+        </div>
+      </div>
+      <p class="subtitle" id="revealMessage">Press and hold the photo.</p>
+      <div class="actions"><button class="btn btn-primary next" id="revealNext" style="opacity:.35;pointer-events:none">That one means a lot ❤️</button></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="scene">
+    <div class="inner">
+      <div class="small-label">LITTLE PIECES OF US</div>
+      <div class="film-wrap">
+        <div class="film-track">
+          <div class="film-card" style="--r:-4deg"><img src="assets/photo6.jpg" alt=""><span>My happiness ✨</span></div>
+          <div class="film-card" style="--r:3deg"><img src="assets/photo7.jpg" alt=""><span>My favorite headache 😂❤️</span></div>
+          <div class="film-card" style="--r:-2deg"><img src="assets/photo8.jpg" alt=""><span>My comfort 🤍</span></div>
+          <div class="film-card" style="--r:4deg"><img src="assets/photo9.jpg" alt=""><span>My favorite memories ❤️</span></div>
+          <div class="film-card" style="--r:-4deg"><img src="assets/photo6.jpg" alt=""><span>My happiness ✨</span></div>
+          <div class="film-card" style="--r:3deg"><img src="assets/photo7.jpg" alt=""><span>My favorite headache 😂❤️</span></div>
+        </div>
+      </div>
+      <p class="subtitle">Some moments are beautiful because of where we were. Mine are beautiful because you were there.</p>
+      <div class="actions"><button class="btn btn-primary next">Keep going ❤️</button></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="scene" id="rapidScene">
+    <div class="inner">
+      <div class="small-label">AND THEN THERE'S YOU</div>
+      <div class="rapid-stage">
+        <div class="rapid-card"><img src="assets/photo10.jpg" alt=""></div>
+        <div class="rapid-card"><img src="assets/photo11.jpg" alt=""></div>
+        <div class="rapid-card"><img src="assets/photo12.jpg" alt=""></div>
+        <div class="rapid-caption" id="rapidCaption">Your smile. ❤️</div>
+      </div>
+      <div class="actions"><button class="btn btn-primary next">And the real truth…</button></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="scene">
+    <div class="inner">
+      <div class="apology-heart">❤️</div>
+      <h2 class="hero" style="font-size:clamp(42px,7vw,84px)">I'm sorry<br><em>I'm late.</em></h2>
+      <p class="subtitle soft-lines">
+        <span>You deserved to feel celebrated right on time.</span>
+        <span>But missing the exact date could never mean forgetting how important you are to me.</span>
+        <span>Loving you is never something I remember only once a year. ❤️</span>
       </p>
-
-      <div class="actions">
-        <button class="btn btn-primary next">
-          Keep going ❤️
-        </button>
-      </div>
-
+      <div class="actions"><button class="btn btn-primary next">One last thing…</button></div>
     </div>
   </section>
 
-  <!-- SCENE 5 -->
-  <section class="scene">
+  <!-- 10 -->
+  <section class="scene" id="finalScene">
     <div class="inner">
-
-      <div class="full-photo">
-        <img src="assets/photo4.jpg" alt="">
+      <div class="mosaic">
+        <div class="tile" style="--rr:-7deg"><img src="assets/photo1.jpg" alt=""></div>
+        <div class="tile" style="--rr:5deg"><img src="assets/photo2.jpg" alt=""></div>
+        <div class="tile" style="--rr:-4deg"><img src="assets/photo3.jpg" alt=""></div>
+        <div class="tile" style="--rr:6deg"><img src="assets/photo4.jpg" alt=""></div>
+        <div class="tile" style="--rr:-5deg"><img src="assets/photo5.jpg" alt=""></div>
+        <div class="tile" style="--rr:4deg"><img src="assets/photo6.jpg" alt=""></div>
+        <div class="tile" style="--rr:-6deg"><img src="assets/photo7.jpg" alt=""></div>
+        <div class="tile" style="--rr:5deg"><img src="assets/photo8.jpg" alt=""></div>
+        <div class="tile" style="--rr:-4deg"><img src="assets/photo9.jpg" alt=""></div>
+        <div class="tile" style="--rr:5deg"><img src="assets/photo10.jpg" alt=""></div>
+        <div class="tile" style="--rr:-5deg"><img src="assets/photo11.jpg" alt=""></div>
+        <div class="tile" style="--rr:4deg"><img src="assets/photo12.jpg" alt=""></div>
       </div>
 
-      <p class="subtitle">
-        You're my favorite smile,
-        my favorite notification,
-        my favorite person to annoy…
-        and somehow still the person
-        I want beside me through everything.
+      <div class="small-label">TO MY FAVORITE PERSON IN THE WORLD</div>
+      <h1 class="final-title">Happy Birthday,<br><em>My Love.</em></h1>
+      <p class="final-sub">
+        I hope this year gives you more happiness, more peace, more beautiful memories, and everything your heart has been wishing for.<br><br>
+        Thank you for being you.<br>
+        Thank you for being mine.<br><br>
+        <strong>Late wish.<br>Endless love. ❤️</strong>
       </p>
-
-      <button class="btn btn-primary next">
-        One more thing…
-      </button>
-
+      <div class="signature">FOREVER YOURS</div>
+      <div class="actions"><button class="btn btn-primary" id="replayFinal">Watch again ↻</button></div>
     </div>
   </section>
 
-  <!-- SCENE 6 -->
-  <section class="scene">
-    <div class="inner">
-
-      <div class="big-heart">
-        ❤️
-      </div>
-
-      <h2 class="hero" style="font-size:clamp(42px,7vw,88px)">
-        I'm sorry<br>
-        <em>I'm late.</em>
-      </h2>
-
-      <p class="subtitle">
-        You deserved to feel celebrated right on time.
-        <br><br>
-        But I hope you always know that
-        loving you is never something I remember only once a year.
-      </p>
-
-      <button class="btn btn-primary next">
-        ❤️
-      </button>
-
-    </div>
-  </section>
-
-  <!-- SCENE 7 -->
-  <section class="scene">
-    <div class="inner">
-
-      <div class="memory-stage">
-
-        <div class="memory-card card1">
-          <img src="assets/photo5.jpg" alt="">
-          <span>My peace 🤍</span>
-        </div>
-
-        <div class="memory-card card2">
-          <img src="assets/photo6.jpg" alt="">
-          <span>My happiness ✨</span>
-        </div>
-
-        <div class="memory-card card3">
-          <img src="assets/photo7.jpg" alt="">
-          <span>And occasionally… my headache 😂❤️</span>
-        </div>
-
-      </div>
-
-      <button class="btn btn-primary next">
-        Final message →
-      </button>
-
-    </div>
-  </section>
-
-  <!-- FINAL -->
-  <section class="scene">
-    <div class="inner">
-
-      <div class="small-label">
-        TO MY FAVORITE PERSON IN THE WORLD
-      </div>
-
-      <h1 class="final-title">
-        Happy Birthday,<br>
-        <span>My Love.</span>
-      </h1>
-
-      <p class="subtitle">
-        I hope this year brings you more happiness,
-        more peace, more beautiful memories,
-        and everything your heart has been wishing for.
-        <br><br>
-
-        Thank you for being you.
-        <br>
-        Thank you for being mine.
-        <br><br>
-
-        <strong style="color:white">
-          Late wish.
-          <br>
-          Endless love. ❤️
-        </strong>
-      </p>
-
-      <div class="signature">
-        FOREVER YOURS
-      </div>
-
-      <div class="actions">
-        <button class="btn btn-primary" id="replayFinal">
-          Watch again ↻
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="progress-wrap">
-    <div class="progress" id="progress"></div>
-  </div>
-
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
 </div>
 
 <script>
+(() => {
+  const app = document.getElementById("app");
+  const scenes = [...document.querySelectorAll(".scene")];
+  const progress = document.getElementById("progress");
+  const music = document.getElementById("music");
+  const musicBtn = document.getElementById("musicBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const replayFinal = document.getElementById("replayFinal");
+  const fxLayer = document.getElementById("fxLayer");
+  const touchLayer = document.getElementById("touchLayer");
 
-const scenes = [...document.querySelectorAll(".scene")];
+  let current = 0;
+  let musicStarted = false;
+  let rapidTimer = null;
+  let holdRAF = null;
+  let holdStart = null;
+  let revealDone = false;
 
-const progress = document.getElementById("progress");
+  const vibrate = (ms=25) => {
+    if (navigator.vibrate) navigator.vibrate(ms);
+  };
 
-const music = document.getElementById("music");
-
-const musicBtn = document.getElementById("musicBtn");
-
-const restartBtn = document.getElementById("restartBtn");
-
-const replayFinal = document.getElementById("replayFinal");
-
-let current = 0;
-
-let musicStarted = false;
-
-
-/* --------------------------
-   SCENE MANAGEMENT
---------------------------- */
-
-function showScene(index){
-
-  scenes.forEach((scene,i)=>{
-
-    scene.classList.remove("active","exit");
-
-    if(i === index){
-      scene.classList.add("active");
-    }
-
-  });
-
-  current = index;
-
-  progress.style.width =
-    ((current + 1) / scenes.length * 100) + "%";
-
-
-  /* FINAL CONFETTI */
-
-  if(current === scenes.length - 1){
-    createCelebration();
+  function setProgress(){
+    progress.style.width = ((current + 1) / scenes.length * 100) + "%";
   }
 
-}
+  function showScene(index){
+    if(index < 0 || index >= scenes.length || index === current) return;
 
+    const old = scenes[current];
+    const next = scenes[index];
 
-/* --------------------------
-   NEXT BUTTONS
---------------------------- */
+    old.classList.remove("active");
+    old.classList.add("leaving");
 
-document.querySelectorAll(".next").forEach(button=>{
+    setTimeout(() => {
+      old.classList.remove("leaving");
+      current = index;
+      next.classList.add("active");
+      setProgress();
 
-  button.addEventListener("click",()=>{
+      if(next.id === "rapidScene") startRapid();
+      else stopRapid();
 
+      if(next.id === "finalScene") {
+        createCelebration();
+        setTimeout(createCelebration, 1200);
+      }
+    }, 420);
+  }
+
+  function nextScene(){
+    vibrate(22);
     startMusic();
+    if(current < scenes.length - 1) showScene(current + 1);
+  }
 
-    if(current < scenes.length - 1){
+  document.querySelectorAll(".next").forEach(btn => btn.addEventListener("click", nextScene));
 
-      scenes[current].classList.add("shake");
-
-      setTimeout(()=>{
-
-        scenes[current].classList.remove("shake");
-
-        showScene(current + 1);
-
-      },180);
-
+  function startMusic(){
+    if(!musicStarted){
+      music.volume = .52;
+      music.play().catch(()=>{});
+      musicStarted = true;
     }
+  }
 
+  musicBtn.addEventListener("click", () => {
+    vibrate(18);
+    if(music.paused){
+      music.play().catch(()=>{});
+      musicBtn.textContent = "♫";
+    } else {
+      music.pause();
+      musicBtn.textContent = "♪";
+    }
   });
 
-});
+  function restart(){
+    stopRapid();
+    scenes.forEach(s => s.classList.remove("active","leaving"));
+    current = 0;
+    scenes[0].classList.add("active");
+    setProgress();
+    window.scrollTo(0,0);
+  }
+  restartBtn.addEventListener("click", restart);
+  replayFinal.addEventListener("click", restart);
 
+  /* Cute tap hearts */
+  app.addEventListener("pointerdown", e => {
+    if(e.target.closest("input")) return;
+    const h = document.createElement("div");
+    h.className = "touch-heart";
+    h.textContent = ["❤️","💗","✨"][Math.floor(Math.random()*3)];
+    h.style.left = e.clientX + "px";
+    h.style.top = e.clientY + "px";
+    touchLayer.appendChild(h);
+    setTimeout(()=>h.remove(),1300);
+  });
 
-/* --------------------------
-   MUSIC
---------------------------- */
+  /* Mood slider */
+  const moodRange = document.getElementById("moodRange");
+  const moodResponse = document.getElementById("moodResponse");
+  const moodFace = document.getElementById("moodFace");
 
-function startMusic(){
+  function updateMood(){
+    const v = Number(moodRange.value);
+    if(v < 25){
+      moodFace.textContent = "😌";
+      moodResponse.textContent = "I knew you loved me. 😌❤️";
+    } else if(v < 55){
+      moodFace.textContent = "🥺";
+      moodResponse.textContent = "Okay… I can still survive this. 😂❤️";
+    } else if(v < 80){
+      moodFace.textContent = "😭";
+      moodResponse.textContent = "Fair. Very fair. I deserve this. 😭";
+    } else {
+      moodFace.textContent = "🫣";
+      moodResponse.textContent = "Okay okay okay I'M SORRY 😭❤️";
+    }
+    moodFace.style.transform = `scale(${1 + v/500}) rotate(${(v-50)/18}deg)`;
+  }
+  moodRange.addEventListener("input", updateMood);
+  updateMood();
 
-  if(!musicStarted){
+  /* Hold to reveal */
+  const shell = document.getElementById("revealShell");
+  const ring = document.getElementById("holdRing");
+  const holdText = document.getElementById("holdText");
+  const revealMessage = document.getElementById("revealMessage");
+  const revealNext = document.getElementById("revealNext");
+  const revealImg = shell.querySelector("img");
+  const HOLD_MS = 1900;
 
-    music.volume = .55;
-
-    music.play().catch(()=>{});
-
-    musicStarted = true;
-
-    musicBtn.textContent = "♫";
-
+  function resetHold(){
+    if(revealDone) return;
+    holdStart = null;
+    cancelAnimationFrame(holdRAF);
+    ring.style.setProperty("--hold","0%");
+    holdText.innerHTML = "Hold<br>to reveal ❤️";
+    revealImg.style.filter = "blur(22px) brightness(.72)";
+    revealImg.style.transform = "scale(1.08)";
   }
 
-}
+  function tickHold(now){
+    if(!holdStart) holdStart = now;
+    const p = Math.min(1,(now-holdStart)/HOLD_MS);
+    const pct = Math.round(p*100);
+    ring.style.setProperty("--hold",pct+"%");
+    holdText.innerHTML = pct < 100 ? `${pct}%<br>keep holding ❤️` : "❤️";
+    revealImg.style.filter = `blur(${22*(1-p)}px) brightness(${.72 + .28*p})`;
+    revealImg.style.transform = `scale(${1.08 - .08*p})`;
 
-
-musicBtn.addEventListener("click",()=>{
-
-  if(music.paused){
-
-    music.play();
-
-    musicBtn.textContent = "♫";
-
-  }else{
-
-    music.pause();
-
-    musicBtn.textContent = "♪";
-
+    if(p >= 1){
+      revealDone = true;
+      shell.classList.add("reveal-done");
+      revealMessage.textContent = "Some memories don't need words. ❤️";
+      revealNext.style.opacity = "1";
+      revealNext.style.pointerEvents = "auto";
+      vibrate(45);
+      createMiniBurst(shell);
+      return;
+    }
+    holdRAF = requestAnimationFrame(tickHold);
   }
 
-});
+  shell.addEventListener("pointerdown", e => {
+    if(revealDone) return;
+    e.preventDefault();
+    shell.setPointerCapture?.(e.pointerId);
+    holdStart = null;
+    holdRAF = requestAnimationFrame(tickHold);
+  });
+  shell.addEventListener("pointerup", resetHold);
+  shell.addEventListener("pointercancel", resetHold);
+  shell.addEventListener("pointerleave", e => { if(e.buttons) resetHold(); });
 
+  /* Rapid photo sequence */
+  const rapidCards = [...document.querySelectorAll(".rapid-card")];
+  const rapidCaption = document.getElementById("rapidCaption");
+  const rapidTexts = ["Your smile. ❤️","The way you make everything warmer.","And simply… you. 🤍"];
+  let rapidIndex = 0;
 
-/* --------------------------
-   RESTART
---------------------------- */
+  function startRapid(){
+    stopRapid();
+    rapidIndex = 0;
+    rapidCards.forEach(c => c.classList.remove("on"));
+    rapidCards[0].classList.add("on");
+    rapidCaption.textContent = rapidTexts[0];
 
-function restart(){
-
-  showScene(0);
-
-}
-
-
-restartBtn.addEventListener("click",restart);
-
-replayFinal.addEventListener("click",restart);
-
-
-/* --------------------------
-   CONFETTI
---------------------------- */
-
-function createCelebration(){
-
-  const icons = [
-    "❤️",
-    "✨",
-    "💗",
-    "🎉",
-    "🥳",
-    "💕",
-    "🌸"
-  ];
-
-  for(let i=0;i<45;i++){
-
-    setTimeout(()=>{
-
-      const particle =
-        document.createElement("div");
-
-      particle.className = "particle";
-
-      particle.innerText =
-        icons[Math.floor(Math.random()*icons.length)];
-
-      particle.style.left =
-        Math.random()*100+"%";
-
-      particle.style.fontSize =
-        (14 + Math.random()*20)+"px";
-
-      particle.style.animationDuration =
-        (3 + Math.random()*3)+"s";
-
-      document
-        .getElementById("app")
-        .appendChild(particle);
-
-      setTimeout(()=>{
-        particle.remove();
-      },6500);
-
-    },i*45);
-
+    rapidTimer = setInterval(() => {
+      rapidIndex = (rapidIndex + 1) % rapidCards.length;
+      rapidCards.forEach(c => c.classList.remove("on"));
+      rapidCards[rapidIndex].classList.add("on");
+      rapidCaption.textContent = rapidTexts[rapidIndex];
+      vibrate(14);
+    }, 1800);
+  }
+  function stopRapid(){
+    if(rapidTimer){clearInterval(rapidTimer);rapidTimer=null;}
   }
 
-}
-
-
-/* --------------------------
-   OPTIONAL KEYBOARD NAV
---------------------------- */
-
-document.addEventListener("keydown",(e)=>{
-
-  if(e.key === "ArrowRight" &&
-     current < scenes.length-1){
-
-    showScene(current+1);
-
+  function createMiniBurst(el){
+    const r = el.getBoundingClientRect();
+    for(let i=0;i<18;i++){
+      const p = document.createElement("div");
+      p.className = "touch-heart";
+      p.textContent = ["❤️","✨","💗"][Math.floor(Math.random()*3)];
+      p.style.left = (r.left + r.width/2 + (Math.random()-.5)*120) + "px";
+      p.style.top = (r.top + r.height/2 + (Math.random()-.5)*120) + "px";
+      touchLayer.appendChild(p);
+      setTimeout(()=>p.remove(),1300);
+    }
   }
 
-  if(e.key === "ArrowLeft" &&
-     current > 0){
-
-    showScene(current-1);
-
+  function createCelebration(){
+    const icons = ["❤️","✨","💗","🎉","💕","🌸","💖"];
+    for(let i=0;i<52;i++){
+      setTimeout(() => {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.textContent = icons[Math.floor(Math.random()*icons.length)];
+        p.style.left = Math.random()*100 + "%";
+        p.style.fontSize = (14 + Math.random()*20) + "px";
+        p.style.animationDuration = (3.2 + Math.random()*3.2) + "s";
+        fxLayer.appendChild(p);
+        setTimeout(()=>p.remove(),6800);
+      }, i*32);
+    }
   }
 
-});
-
-
-/* --------------------------
-   INITIAL PROGRESS
---------------------------- */
-
-showScene(0);
-
+  setProgress();
+})();
 </script>
-
 </body>
 </html>
