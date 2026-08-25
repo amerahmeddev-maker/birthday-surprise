@@ -131,6 +131,34 @@ button,input{font:inherit}
 .final-message h1{font-family:"Great Vibes";font-size:clamp(48px,9vw,92px);line-height:.9;color:#c85f7e;font-weight:400}
 .final-message p{margin-top:14px;line-height:1.55;color:#67545c}
 
+
+/* playful anger check */
+.anger-card{
+ width:min(680px,94%);margin:auto;padding:clamp(26px,5vw,44px) clamp(20px,5vw,38px);
+ border-radius:34px;background:rgba(255,253,249,.72);border:1px solid rgba(90,61,72,.10);
+ backdrop-filter:blur(18px);box-shadow:0 28px 70px rgba(88,55,68,.13)
+}
+.anger-face{font-size:clamp(54px,12vw,86px);line-height:1;margin:8px 0 18px;display:inline-block;transform-origin:center}
+.anger-card.shaky .anger-face{animation:angryShake .28s linear 2}
+@keyframes angryShake{25%{transform:translateX(-5px) rotate(-4deg)}75%{transform:translateX(5px) rotate(4deg)}}
+.anger-question{font-family:"Playfair Display",serif;font-size:clamp(31px,6vw,56px);line-height:1.08;letter-spacing:-.03em}
+.anger-range{width:min(560px,100%);margin:30px auto 0}
+#angerSlider{width:100%;accent-color:#df7893;cursor:pointer}
+.range-labels{display:flex;justify-content:space-between;gap:12px;margin-top:10px;color:#8a747d;font-size:clamp(12px,3.2vw,15px)}
+.survival{margin:26px auto 0;padding:20px;border-radius:24px;background:rgba(255,255,255,.62);border:1px solid rgba(90,61,72,.08)}
+.survival-top{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-weight:700;color:#6b535d}
+.survival-number{font-family:"Playfair Display",serif;font-size:clamp(40px,9vw,62px);line-height:1;color:#c85f7e;margin-top:8px;font-variant-numeric:tabular-nums}
+.survival-bar{height:9px;width:min(430px,100%);margin:14px auto 0;border-radius:999px;background:rgba(90,62,73,.10);overflow:hidden}
+.survival-bar span{display:block;height:100%;width:50%;border-radius:inherit;background:linear-gradient(90deg,#d96f8d,#e895aa);transition:width .28s ease}
+#survivalLine{min-height:25px;margin-top:12px;color:#755f68;font-size:15px;font-weight:600}
+.anger-card .actions{margin-top:22px}
+@media(max-width:650px){
+ .anger-card{border-radius:28px;padding:25px 18px}
+ .anger-range{margin-top:24px}
+ .survival{padding:17px 14px;margin-top:22px}
+ .range-labels span{max-width:45%}
+}
+
 @media(max-width:650px){
  .scene{padding:18px}
  .scrap{height:500px}.polaroid{width:45vw}.p1{left:0;top:25%}.p2{left:27%;top:3%}.p3{right:-2%;top:42%}
@@ -169,6 +197,31 @@ button,input{font:inherit}
   <h1 class="title">Yes, I am<br><span class="script">late.</span> 😭</h1>
   <p class="copy">I know. I know. Your birthday wish deserved perfect timing.<br><br>Unfortunately, your husband and perfect timing are still working on their relationship. 😂</p>
   <div class="actions"><button class="btn primary next">But I brought memories… ❤️</button></div>
+ </div>
+</section>
+
+
+<section class="scene">
+ <div class="inner">
+  <div class="anger-card" id="angerCard">
+   <div class="kicker">OKAY, ONE IMPORTANT QUESTION</div>
+   <div class="anger-face" id="angerFace" aria-hidden="true">😭</div>
+   <h2 class="anger-question">How angry are you<br>that I’m late? 😭</h2>
+
+   <div class="anger-range">
+    <input id="angerSlider" type="range" min="0" max="100" value="50" aria-label="How angry are you that I'm late?">
+    <div class="range-labels"><span>Not angry ❤️</span><span>Very angry 😭</span></div>
+   </div>
+
+   <div class="survival" aria-live="polite">
+    <div class="survival-top"><span>My chances of surviving this</span><span>😂</span></div>
+    <div class="survival-number"><span id="survivalNumber">50</span>%</div>
+    <div class="survival-bar"><span id="survivalFill"></span></div>
+    <div id="survivalLine">Hmm… I should probably apologize properly.</div>
+   </div>
+
+   <div class="actions"><button class="btn primary next">Okay, I accept my fate 😭</button></div>
+  </div>
  </div>
 </section>
 
@@ -287,6 +340,33 @@ document.querySelectorAll(".next").forEach(b=>b.addEventListener("click",()=>{st
 document.getElementById("musicBtn").addEventListener("click",()=>{if(music.paused){music.play().catch(()=>{});event.currentTarget.textContent="♫"}else{music.pause();event.currentTarget.textContent="♪"}});
 function reset(){scenes.forEach(s=>s.classList.remove("active","out"));current=0;scenes[0].classList.add("active");setBar()}
 document.getElementById("restart").addEventListener("click",reset);document.getElementById("again").addEventListener("click",reset);
+
+
+const angerSlider=document.getElementById("angerSlider"),survivalNumber=document.getElementById("survivalNumber"),
+survivalFill=document.getElementById("survivalFill"),survivalLine=document.getElementById("survivalLine"),
+angerFace=document.getElementById("angerFace"),angerCard=document.getElementById("angerCard");
+let lastAngerBand=-1;
+function updateAnger(){
+ const anger=Number(angerSlider.value),survival=100-anger;
+ survivalNumber.textContent=survival;
+ survivalFill.style.width=survival+"%";
+ let line="Hmm… I should probably apologize properly.",face="😭",band=2;
+ if(anger<=20){line="Okay… I might actually survive this. 😂❤️";face="🥹";band=0}
+ else if(anger<=40){line="I knew you still liked me a little. 😌❤️";face="😅";band=1}
+ else if(anger<=65){line="Hmm… I should probably apologize properly.";face="😭";band=2}
+ else if(anger<=85){line="Yeah… I definitely deserve this. 😂";face="😰";band=3}
+ else if(anger<100){line="It was nice knowing everyone. 💀";face="💀";band=4}
+ else{line="Tell my family I loved them. 😭";face="😭";band=5}
+ survivalLine.textContent=line;angerFace.textContent=face;
+ if(band>=3 && band!==lastAngerBand){
+   angerCard.classList.remove("shaky"); void angerCard.offsetWidth; angerCard.classList.add("shaky");
+   vib(band===5?[45,35,45]:28);
+ }
+ lastAngerBand=band;
+}
+angerSlider.addEventListener("input",updateAnger);
+updateAnger();
+
 
 const env=document.getElementById("envelope");
 env.addEventListener("click",()=>{env.classList.add("open");startMusic();vib(30)});
